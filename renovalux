@@ -1,0 +1,135 @@
+// React Projektstruktur für RenovaLux GmbH
+
+// src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './index.css';
+import App from './App';
+import Startseite from './pages/Startseite';
+import Team from './pages/Team';
+import Dienstleistungen from './pages/Dienstleistungen';
+import Kontakt from './pages/Kontakt';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <Router>
+      <Routes>
+        <Route path='/' element={<App />}>
+          <Route index element={<Startseite />} />
+          <Route path='team' element={<Team />} />
+          <Route path='dienstleistungen' element={<Dienstleistungen />} />
+          <Route path='kontakt' element={<Kontakt />} />
+        </Route>
+      </Routes>
+    </Router>
+  </React.StrictMode>
+);
+
+// src/App.js
+import React from 'react';
+import { Outlet, Link } from 'react-router-dom';
+import './App.css';
+
+function App() {
+  return (
+    <div>
+      <header className='header'>
+        <h1>RenovaLux GmbH</h1>
+        <nav>
+          <Link to='/'>Startseite</Link>
+          <Link to='/team'>Team</Link>
+          <Link to='/dienstleistungen'>Dienstleistungen</Link>
+          <Link to='/kontakt'>Kontakt</Link>
+        </nav>
+      </header>
+      <main>
+        <Outlet />
+      </main>
+      <footer>
+        <p>© 2025 RenovaLux GmbH - Schweiz</p>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
+
+// src/pages/Startseite.js
+import React from 'react';
+function Startseite() {
+  return (
+    <section>
+      <h2>Willkommen bei RenovaLux GmbH</h2>
+      <p>Ankauf, Renovation und Verkauf von Immobilien in der ganzen Schweiz.</p>
+      <button>Kontaktieren Sie uns</button>
+    </section>
+  );
+}
+export default Startseite;
+
+// src/pages/Team.js
+import React from 'react';
+function Team() {
+  const mitglieder = ['Crescenzo Ambruoso', 'David Jenni', 'Santo Borrello'];
+  return (
+    <section>
+      <h2>Unser Team</h2>
+      <ul>
+        {mitglieder.map((mitglied, idx) => (
+          <li key={idx}>{mitglied}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+export default Team;
+
+// src/pages/Dienstleistungen.js
+import React from 'react';
+function Dienstleistungen() {
+  return (
+    <section>
+      <h2>Unsere Dienstleistungen</h2>
+      <ul>
+        <li>Ankauf gebrauchter Immobilien</li>
+        <li>Renovation</li>
+        <li>Verkauf</li>
+      </ul>
+    </section>
+  );
+}
+export default Dienstleistungen;
+
+// src/pages/Kontakt.js
+import React, { useState } from 'react';
+function Kontakt() {
+  const [form, setForm] = useState({ name: '', email: '', nachricht: '' });
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleSubmit = e => {
+    e.preventDefault();
+    alert('Vielen Dank für Ihre Nachricht!');
+    setForm({ name: '', email: '', nachricht: '' });
+  };
+
+  return (
+    <section>
+      <h2>Kontaktieren Sie uns</h2>
+      <form onSubmit={handleSubmit}>
+        <input name='name' value={form.name} onChange={handleChange} placeholder='Name' required />
+        <input type='email' name='email' value={form.email} onChange={handleChange} placeholder='E-Mail' required />
+        <textarea name='nachricht' value={form.nachricht} onChange={handleChange} placeholder='Nachricht' required />
+        <button type='submit'>Absenden</button>
+      </form>
+    </section>
+  );
+}
+export default Kontakt;
+
+// src/index.css
+body { font-family: Arial, sans-serif; margin:0; padding:0; }
+.header { background:#004aad; color:white; padding:1rem; display:flex; justify-content:space-between; align-items:center; }
+.header nav a { color:white; margin-left:1rem; text-decoration:none; }
+main { padding:2rem; }
+footer { background:#f0f0f0; text-align:center; padding:1rem; margin-top:2rem; }
